@@ -159,6 +159,8 @@ public class QsControlsView extends FrameLayout {
     private Handler mHandler;
     private Runnable mMediaUpdater;
 
+    private Bitmap mLastAlbumArt;
+
     protected final CellSignalCallback mCellSignalCallback = new CellSignalCallback();
     protected final WifiSignalCallback mWifiSignalCallback = new WifiSignalCallback();
 
@@ -462,7 +464,11 @@ public class QsControlsView extends FrameLayout {
         if (albumArt != null) {
             new ProcessArtworkTask().execute(albumArt);
         } else {
-            mMediaAlbumArtBg.setImageBitmap(null);
+            if (mLastAlbumArt != null) {
+                mMediaAlbumArtBg.setImageBitmap(mLastAlbumArt);
+            } else {
+                mMediaAlbumArtBg.setImageBitmap(null);
+            }
         }
         updateMediaViews();
     }
@@ -511,6 +517,7 @@ public class QsControlsView extends FrameLayout {
                 final int mediaFadeLevel = mContext.getResources().getInteger(R.integer.media_player_fade);
                 final int fadeFilter = ColorUtils.blendARGB(Color.TRANSPARENT, mNotifManager == null ? Color.BLACK : mNotifManager.getMediaBgColor(), mediaFadeLevel / 100f);
                 mMediaAlbumArtBg.setColorFilter(fadeFilter, PorterDuff.Mode.SRC_ATOP);
+                mLastAlbumArt = mAlbumArt;
                 mMediaAlbumArtBg.setImageBitmap(mAlbumArt);
             }
         }
