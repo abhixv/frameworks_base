@@ -153,6 +153,8 @@ public class QsControlsView extends FrameLayout {
     private MediaMetadata mMediaMetadata;
     private boolean mInflated = false;
     private Bitmap mAlbumArt = null;
+    private CharSequence mLastMediaTitle;
+    private CharSequence mLastMediaArtist;
     
     private boolean isClearingMetadata = false;
     
@@ -487,8 +489,10 @@ public class QsControlsView extends FrameLayout {
         }
         CharSequence title = mMediaMetadata == null ? null : mMediaMetadata.getText(MediaMetadata.METADATA_KEY_TITLE);
         CharSequence artist = mMediaMetadata == null ? null : mMediaMetadata.getText(MediaMetadata.METADATA_KEY_ARTIST);
-        mMediaTitle.setText(title != null ? title : mContext.getString(R.string.no_media_playing));
-        mMediaArtist.setText(artist != null ? artist : "");
+        mLastMediaTitle = title != null ? title : mLastMediaTitle;
+        mLastMediaArtist = artist != null ? artist : mLastMediaArtist;
+        mMediaTitle.setText(mLastMediaTitle);
+        mMediaArtist.setText(mLastMediaArtist);
         mPlayerIcon.setImageIcon(mNotifManager == null ? null : mNotifManager.getMediaIcon());
         final int mediaItemColor = getMediaItemColor();
         for (View view : mMediaPlayerViews) {
